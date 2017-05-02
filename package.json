@@ -1,0 +1,23 @@
+{
+  "name": "get-styled-clone",
+  "version": "1.0.0",
+  "description": "Get a 1:1 styled clone of an element",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup src/index.js --format umd --name getStyledClone --output index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mystrdat/get-styled-clone.git"
+  },
+  "author": "mystrdat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mystrdat/get-styled-clone/issues"
+  },
+  "homepage": "https://github.com/mystrdat/get-styled-clone#readme",
+  "dependencies": {
+    "rollup": "^0.41.6"
+  }
+}
