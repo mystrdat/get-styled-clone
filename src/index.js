@@ -1,10 +1,16 @@
-const getStyledClone = (element, position = false) => {
+const getStyledClone = (element, options) => {
+  const opts = Object.assign({
+    position: false,
+    fixTransform: true
+  }, options);
   if (element instanceof HTMLElement) {
     const clone = element.cloneNode(true),
           cloneNodes = Array.prototype.slice.call(clone.querySelectorAll('*')),
-          elementNodes = Array.prototype.slice.call(element.querySelectorAll('*'));
+          elementNodes = Array.prototype.slice.call(element.querySelectorAll('*')),
+          elementStyles = window.getComputedStyle(element),
+          transformCache = elementStyles.transform;
     // Process parent
-    clone.style.cssText = window.getComputedStyle(element).cssText;
+    clone.style.cssText = elementStyles.cssText;
     clone.style.webkitTextFillColor = 'initial';
     // Process children
     cloneNodes.forEach((node, i) => {
@@ -12,16 +18,23 @@ const getStyledClone = (element, position = false) => {
       node.style.webkitTextFillColor = 'initial';
     })
     // Set clone position
-    if (position) {
-      const elementBounds = element.getBoundingClientRect();
+    if (opts.position) {
       clone.style.position = 'fixed';
-      clone.style.left = `${elementBounds.left}px`;
-      clone.style.top = `${elementBounds.top}px`;
-      // Conflicting properties
-      clone.style.margin = 0;
-      clone.style.transform = 'none'; // TODO: keep relevant transforms
+      clone.style.margin = 0; // Conflicting
+      // Transform
+      if (opts.fixTransform) {
+        element.style.transform = 'none';
+        const transformlessBounds = element.getBoundingClientRect();
+        element.style.transform = transformCache;
+        clone.style.left = `${transformlessBounds.left}px`;
+        clone.style.top = `${transformlessBounds.top}px`;
+      } else {
+        const elementBounds = element.getBoundingClientRect();
+        clone.style.left = `${elementBounds.left}px`;
+        clone.style.top = `${elementBounds.top}px`;
+      }
     }
-    // Append to fragment
+    // Return cloned element
     return clone;
   } else {
     throw new Error('Parameter must be a HTMLElement reference.');
