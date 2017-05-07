@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/mystrdat/get-styled-clone#readme",
   "dependencies": {
+    "css-translate-matrix-parser": "^1.0.2",
     "rollup": "^0.41.6"
+  },
+  "devDependencies": {
+    "rollup-plugin-node-resolve": "^3.0.0"
   }
 }
