@@ -29,8 +29,10 @@ const getStyledClone = (element, options) => {
       clone.style.margin = 0; // Conflicting
       // Transform
       if (opts.fixTransform) {
+        // Get bounds without transform
         element.style.transform = 'none';
         const transformlessBounds = element.getBoundingClientRect();
+        // Reapply original transform
         element.style.transform = transformCache;
         clone.style.left = `${transformlessBounds.left}px`;
         clone.style.top = `${transformlessBounds.top}px`;
