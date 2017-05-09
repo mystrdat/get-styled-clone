@@ -14,8 +14,8 @@ const getStyledClone = (element, options) => {
           cloneNodes = Array.prototype.slice.call(clone.querySelectorAll('*')),
           elementNodes = Array.prototype.slice.call(element.querySelectorAll('*')),
           elementStyles = window.getComputedStyle(element),
-          transformCache = elementStyles.transform,
-          inlineStyleCache = element.getAttribute('style');
+          hasInlineStyle = !!element.getAttribute('style'),
+          transformCache = elementStyles.transform;
     // Process parent
     clone.style.cssText = elementStyles.cssText;
     clone.style.webkitTextFillColor = 'initial';
@@ -34,7 +34,7 @@ const getStyledClone = (element, options) => {
         element.style.transform = 'none';
         const transformlessBounds = element.getBoundingClientRect();
         // Reapply original transform
-        if (!!inlineStyleCache) {
+        if (hasInlineStyle) {
           element.style.transform = transformCache;
         } else {
           element.removeAttribute('style');
