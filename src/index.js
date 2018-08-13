@@ -1,7 +1,9 @@
 const getStyledClone = (element, options) => {
   const opts = Object.assign({
     position: false,
-    fixTransform: true
+    fixTransform: true,
+    removeClasses: true,
+    removeIds: true
   }, options);
   if (element instanceof HTMLElement) {
     const clone = element.cloneNode(true),
@@ -13,10 +15,22 @@ const getStyledClone = (element, options) => {
     // Process parent
     clone.style.cssText = elementStyles.cssText;
     clone.style.webkitTextFillColor = 'initial';
+    if (opts.removeClasses) {
+      clone.removeAttribute('class');
+    }
+    if (opts.removeIds) {
+      clone.removeAttribute('id');
+    }
     // Process children
     cloneNodes.forEach((node, i) => {
       node.style.cssText = window.getComputedStyle(elementNodes[i]).cssText;
       node.style.webkitTextFillColor = 'initial';
+      if (opts.removeClasses) {
+        node.removeAttribute('class');
+      }
+      if (opts.removeIds) {
+        node.removeAttribute('id');
+      }
     })
     // Set clone position
     if (opts.position) {
