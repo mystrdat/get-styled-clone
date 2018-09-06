@@ -17,7 +17,8 @@
           elementNodes = Array.prototype.slice.call(element.querySelectorAll('*')),
           elementStyles = window.getComputedStyle(element),
           hasInlineStyle = !!element.getAttribute('style'),
-          transformCache = elementStyles.transform;
+          transformCache = elementStyles.transform,
+          transitionCache = elementStyles.transition;
       // Process parent
       clone.style.cssText = elementStyles.cssText;
       clone.style.webkitTextFillColor = 'initial';
@@ -44,11 +45,14 @@
         clone.style.margin = 0; // Conflicting
         // Transform
         if (opts.fixTransform) {
+          // Disable transition
+          element.style.transition = 'none !important';
           // Get bounds without transform
-          element.style.transform = 'none';
+          element.style.transform = 'none !important';
           var transformlessBounds = element.getBoundingClientRect();
-          // Reapply original transform
+          // Reapply original transition and transform
           if (hasInlineStyle) {
+            element.style.transition = transitionCache;
             element.style.transform = transformCache;
           } else {
             element.removeAttribute('style');
